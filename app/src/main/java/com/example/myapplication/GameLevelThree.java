@@ -30,16 +30,18 @@ public class GameLevelThree extends View {
     Runnable runnable;
     Paint textPaint = new Paint();
     Paint blockPaint = new Paint();
+    Paint statsPaint = new Paint();
     int score = 0, width, height, ballWidth, ballHeight, numBlocks = 0, brokenBlocks = 0;
     Bitmap ball, paddle;
-    boolean gameOver = false;
+    boolean gameOver = false, showAgain = true;;
     Random random;
     List<Block> levelBlocks = new ArrayList<Block>();
-
+    static final int STATS_HEIGHT = 60;
     public GameLevelThree(Context context) {
         super(context);
         this.context = context;
         this.handler = new Handler();
+        this.statsPaint.setColor(Color.argb(255, 176, 216, 230));
         this.ball = BitmapFactory.decodeResource(getResources(), R.drawable.ball);
         this.paddle = BitmapFactory.decodeResource(getResources(), R.drawable.paddle);
         this.runnable = new Runnable() {
@@ -49,7 +51,7 @@ public class GameLevelThree extends View {
             }
         };
         this.textPaint.setColor(Color.GREEN);
-        this.textPaint.setTextSize(120);
+        this.textPaint.setTextSize(50);
         this.textPaint.setTextAlign(Paint.Align.LEFT);
         this.blockPaint.setColor(Color.argb(255, 249, 129, 0));
         Display display = ((Activity) getContext()).getWindowManager().getDefaultDisplay();
@@ -69,14 +71,19 @@ public class GameLevelThree extends View {
 
     private void initializeBlocks() {
         int blockWidth = this.width / 8, blockHeight = this.height / 16;
-        for (int i = 0; i < 8; i++)  {
-            for (int j = 0; j < 5; j++) {
+        for (int j = 0; j < 5; j++)  {
+            for (int i = 0; i < 8; i++) {
                 levelBlocks.add(new Block(j, i, blockWidth, blockHeight));
                 this.numBlocks++;
             }
         }
     }
-    private void moveOneStep() {
+    @Override
+    protected void onDraw(@NonNull Canvas canvas) {
+        int[] rainbow = context.getResources().getIntArray(R.array.rainbow);
+        super.onDraw(canvas);
+        canvas.drawColor(Color.BLACK);
+        canvas.drawRect(0, 0, this.width, STATS_HEIGHT, this.statsPaint);
         Line ballMovement = new Line(this.ballX, this.ballY, this.ballX + this.ballVelocity.getDx(), this.ballY + this.ballVelocity.getDy());
         this.ballX += this.ballVelocity.getDx();
         this.ballY += this.ballVelocity.getDy();
@@ -127,22 +134,21 @@ public class GameLevelThree extends View {
         if (this.brokenBlocks == this.numBlocks) {
             this.gameOver = true;
         }
-    }
-    @Override
-    protected void onDraw(@NonNull Canvas canvas) {
-        super.onDraw(canvas);
-        canvas.drawColor(Color.BLACK);
-        moveOneStep();
         canvas.drawBitmap(this.ball, this.ballX, this.ballY, null);
         canvas.drawBitmap(this.paddle, this.paddleX, this.paddleY, null);
+        int index = 0;
         for(int i = 0; i < this.numBlocks; i++) {
+            this.blockPaint.setColor(rainbow[index]);
+            if (i % 8 == 7) {
+                index++;
+            }
             if (levelBlocks.get(i).getVisability()) {
-                canvas.drawRect(levelBlocks.get(i).getColumn() * levelBlocks.get(i).getWidth() + 1, levelBlocks.get(i).getRow() * levelBlocks.get(i).getHeight() + 1
+                canvas.drawRect(levelBlocks.get(i).getColumn() * levelBlocks.get(i).getWidth() + 1, levelBlocks.get(i).getRow() * levelBlocks.get(i).getHeight() + 1 + STATS_HEIGHT
                         , levelBlocks.get(i).getColumn() * levelBlocks.get(i).getWidth() + levelBlocks.get(i).getWidth() - 1,
-                        levelBlocks.get(i).getRow() * levelBlocks.get(i).getHeight() + levelBlocks.get(i).getHeight() - 1, this.blockPaint);
+                        levelBlocks.get(i).getRow() * levelBlocks.get(i).getHeight() + levelBlocks.get(i).getHeight() - 1 + STATS_HEIGHT, this.blockPaint);
             }
         }
-        canvas.drawText("score:" + this.score, 20, 120, this.textPaint);
+        canvas.drawText("score:" + this.score, (int)(this.width/8.0), (int)(STATS_HEIGHT/1.5), this.textPaint);
         if (!this.gameOver) {
             this.handler.postDelayed(this.runnable, 30);
         }
@@ -173,18 +179,23 @@ public class GameLevelThree extends View {
     }
 
     private void youLost() {
-
-        this.handler.removeCallbacksAndMessages(null);
-        Intent intent = new Intent(this.context, LosingScreen.class);
-        intent.putExtra("score", this.score);
-        this.context.startActivity(intent);
-        ((Activity) this.context).finish();
+        if (showAgain) {
+            this.handler.removeCallbacksAndMessages(null);
+            Intent intent = new Intent(this.context, LosingScreen.class);
+            intent.putExtra("score", this.score);
+            this.context.startActivity(intent);
+            ((Activity) this.context).finish();
+            this.showAgain = false;
+        }
     }
     private void youWon() {
-        this.handler.removeCallbacksAndMessages(null);
-        Intent intent = new Intent(this.context, YouWonScreen.class);
-        intent.putExtra("score", this.score);
-        this.context.startActivity(intent);
-        ((Activity) this.context).finish();
+        if (showAgain) {
+            this.handler.removeCallbacksAndMessages(null);
+            Intent intent = new Intent(this.context, YouWonScreen.class);
+            intent.putExtra("score", this.score);
+            this.context.startActivity(intent);
+            ((Activity) this.context).finish();
+            this.showAgain = false;
+        }
     }
 }
