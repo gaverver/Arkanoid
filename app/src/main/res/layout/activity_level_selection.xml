@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:background="@drawable/image"
+    tools:context=".LevelSelection">
+    <Button
+        android:layout_marginTop="180sp"
+        android:width="175sp"
+        android:height="80sp"
+        android:background="@drawable/roundedbutton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="20dp"
+        android:hint="@string/level_one"
+        android:onClick="startFirstLevel" />
+    <Button
+        android:layout_marginTop="20sp"
+        android:width="175sp"
+        android:height="80sp"
+        android:background="@drawable/roundedbutton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="20dp"
+        android:hint="@string/level_two"
+        android:onClick="startSecondLevel" />
+    <Button
+        android:layout_marginTop="20sp"
+        android:width="175sp"
+        android:height="80sp"
+        android:background="@drawable/roundedbutton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="20dp"
+        android:hint="@string/level_three"
+        android:onClick="startThirdLevel" />
+
+    <ImageButton
+        android:id="@+id/homePage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="225dp"
+        android:background="@android:color/transparent"
+        android:layout_marginStart="175dp"
+        android:src="@drawable/home_button" />
+
+</LinearLayout>

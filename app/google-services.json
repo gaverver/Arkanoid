@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "582927531797",
+    "project_id": "arkanoid-login-e5340",
+    "storage_bucket": "arkanoid-login-e5340.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:582927531797:android:5ab04b23447670426cb31c",
+        "android_client_info": {
+          "package_name": "com.example.myapplication"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCERFTAxYrgKtMrlrv0qND3tUqTFHyavD8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,0 +1,37 @@
+<resources>
+    <string name="app_name">My Application</string>
+    <string name="login">login</string>
+    <string name="enter_your_email">enter your email</string>
+    <string name="enter_your_password">enter your password</string>
+    <string name="register">register</string>
+    <string name="forward_to_login">forward to login</string>
+    <string name="have_no_account_register_now">have no account? Register now!</string>
+    <string name="title_activity_main">Main</string>
+    <string name="prompt_email">Email</string>
+    <string name="prompt_password">Password</string>
+    <string name="action_sign_in">Sign in or register</string>
+    <string name="action_sign_in_short">Sign in</string>
+    <string name="welcome">"Welcome !"</string>
+    <string name="invalid_username">Not a valid username</string>
+    <string name="invalid_password">Password must be >5 characters</string>
+    <string name="login_failed">"Login failed"</string>
+    <string name="log_out">Log Out</string>
+    <string name="enter_your_username">enter your username</string>
+    <string name="welcome_to_arkanoid">welcome to arkanoid!</string>
+    <string name="remember_me">remember me</string>
+    <string name="press_to_play">press to play!</string>
+    <string name="title_activity_losing_screen">LosingScreen</string>
+    <string name="you_lost_your_points">You Lost. Your points:</string>
+    <string name="back_to_level_selection">back to level selection</string>
+    <string name="_50">50</string>
+    <string name="you_won_your_score">You Won! Your Score is: </string>
+    <string name="level_one">level one</string>
+    <string name="level_two">level two</string>
+    <string name="level_three">level three</string>
+    <string name="log_in">Log In!</string>
+    <string name="sign_up">Sign Up!</string>
+    <string name="game_data">game data</string>
+    <string name="arkanoid">Arkanoid</string>
+    <string name="hello">Hello</string>
+    <string name="you_lost_your_score_is">You Lost. Your score is: </string>
+</resources>
