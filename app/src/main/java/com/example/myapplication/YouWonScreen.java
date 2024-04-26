@@ -44,7 +44,7 @@ public class YouWonScreen extends AppCompatActivity {
                         if (counter == 0) {
                             user = snapshot.getValue(User.class);
                             user.setNumGames(user.getNumGames()+1);
-                            user.setGamesWon(user.getNumGames()+1);
+                            user.setGamesWon(user.getGamesWon()+1);
                             referenceProfile.setValue(user);
                         }
                         counter++;
