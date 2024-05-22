@@ -26,7 +26,7 @@ public class YouWonScreen extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_losing_screen);
+        setContentView(R.layout.activity_you_won_screen);
         this.score = findViewById(R.id.score);
         this.backToScreen = findViewById(R.id.homeScreen);
         this.backToScreen.setOnClickListener(new View.OnClickListener() {
