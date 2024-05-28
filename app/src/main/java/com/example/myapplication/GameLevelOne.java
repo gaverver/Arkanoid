@@ -86,75 +86,121 @@ public class GameLevelOne extends View {
         super.onDraw(canvas);
         canvas.drawColor(Color.BLACK);
         Line ballMovement = new Line(this.ballX, this.ballY, this.ballX + this.ballVelocity.getDx(), this.ballY + this.ballVelocity.getDy());
-        this.ballX += this.ballVelocity.getDx();
-        this.ballY += this.ballVelocity.getDy();
         canvas.drawRect(0, 0, this.width, STATS_HEIGHT, this.statsPaint);
+
         if ((this.ballX >= this.width - this.ball.getWidth()) || (this.ballX <= 0)) {
             this.ballVelocity.setVelocity(-this.ballVelocity.getDx(), this.ballVelocity.getDy());
         }
-        if ((this.ballY >= this.height - this.ball.getHeight()) || (this.ballY <= 0)) {
+        if ((this.ballY >= this.height - this.ball.getHeight()) || (this.ballY <= STATS_HEIGHT)) {
             this.ballVelocity.setVelocity(this.ballVelocity.getDx(), -this.ballVelocity.getDy());
         }
+
         if (this.ballY > this.paddleY + this.paddle.getHeight()) {
             youLost();
         }
-        if(((this.ballX + this.ball.getWidth()) >= this.paddleX) && (this.ballX <= this.paddleX + this.paddle.getWidth())
+        if (((this.ballX + this.ball.getWidth()) >= this.paddleX) && (this.ballX <= this.paddleX + this.paddle.getWidth())
                 && (this.ballY + this.ball.getHeight() >= this.paddleY) && (this.ballY + this.ball.getHeight() <= this.paddleY + this.paddle.getHeight())) {
-            this.ballVelocity.setVelocity(this.ballVelocity.getDx() + 1, -1*(this.ballVelocity.getDy() + 1));
+            this.ballVelocity.setVelocity(this.ballVelocity.getDx() + 1, -1 * (this.ballVelocity.getDy() + 1));
         }
+
         canvas.drawBitmap(this.ball, this.ballX, this.ballY, null);
         canvas.drawBitmap(this.paddle, this.paddleX, this.paddleY, null);
+
         int index = 0;
-        for(int i = 0; i < this.numBlocks; i++) {
+        Paint linePaint = new Paint();
+        linePaint.setColor(Color.BLACK);
+        linePaint.setStrokeWidth(3);
+
+        for (int i = 0; i < this.numBlocks; i++) {
             this.blockPaint.setColor(rainbow[index]);
             if (i % 8 == 7) {
                 index++;
             }
             if (levelBlocks.get(i).getVisability()) {
-                canvas.drawRect(levelBlocks.get(i).getColumn() * levelBlocks.get(i).getWidth() + 1, levelBlocks.get(i).getRow() * levelBlocks.get(i).getHeight() + 1 + STATS_HEIGHT
-                        , levelBlocks.get(i).getColumn() * levelBlocks.get(i).getWidth() + levelBlocks.get(i).getWidth() - 1,
-                        levelBlocks.get(i).getRow() * levelBlocks.get(i).getHeight() + levelBlocks.get(i).getHeight() - 1 + STATS_HEIGHT, this.blockPaint);
+                float left = levelBlocks.get(i).getColumn() * levelBlocks.get(i).getWidth() + 1;
+                float top = levelBlocks.get(i).getRow() * levelBlocks.get(i).getHeight() + 1 + STATS_HEIGHT;
+                float right = levelBlocks.get(i).getColumn() * levelBlocks.get(i).getWidth() + levelBlocks.get(i).getWidth() - 1;
+                float bottom = levelBlocks.get(i).getRow() * levelBlocks.get(i).getHeight() + levelBlocks.get(i).getHeight() - 1 + STATS_HEIGHT;
+
+                canvas.drawRect(left, top, right, bottom, this.blockPaint);
+                canvas.drawLine(left, top, right, top, linePaint); // Top line
+                canvas.drawLine(left, bottom, right, bottom, linePaint); // Bottom line
+                canvas.drawLine(left, top, left, bottom, linePaint); // Left line
+                canvas.drawLine(right, top, right, bottom, linePaint); // Right line
             }
         }
-        canvas.drawText("score:" + this.score, (int)(this.width/8.0), (int)(STATS_HEIGHT/1.5), this.textPaint);
+
+        canvas.drawText("score:" + this.score, (int) (this.width / 8.0), (int) (STATS_HEIGHT / 1.5), this.textPaint);
+
+        int minBlockIndex = -1, interIndex = -1;
+        com.example.myapplication.Geometry.Point minPoint = null;
+        com.example.myapplication.Geometry.Point current = new com.example.myapplication.Geometry.Point(this.ballX, this.ballY);
+
         for (int i = 0; i < this.numBlocks; i++) {
-            Line[] blockLines = levelBlocks.get(i).getLinesOfRect();
             if (levelBlocks.get(i).getVisability()) {
-                if (this.ballX + this.ballWidth >= levelBlocks.get(i).getColumn() * levelBlocks.get(i).getWidth()
-                        && this.ballX <= levelBlocks.get(i).getColumn() * levelBlocks.get(i).getWidth() + levelBlocks.get(i).getWidth()
-                        && this.ballY <= levelBlocks.get(i).getRow() * levelBlocks.get(i).getHeight() + levelBlocks.get(i).getHeight()
-                        && this.ballY >= levelBlocks.get(i).getRow() * levelBlocks.get(i).getHeight()
-                        && (ballMovement.intersectionWith(blockLines[0]) != null || ballMovement.intersectionWith(blockLines[1]) != null)) {
-                    this.ballVelocity.setVelocity(this.ballVelocity.getDx(), -1 * (this.ballVelocity.getDy() + 1));
-                    levelBlocks.get(i).setInvisible();
-                    this.score += 20;
-                    this.brokenBlocks++;
-                    if (this.brokenBlocks == 24) {
-                        youWon();
-                    }
-                }
-                if (this.ballY + this.ballHeight >= this.levelBlocks.get(i).getRow() * this.levelBlocks.get(i).getHeight()
-                        && this.ballY <= this.levelBlocks.get(i).getRow() * this.levelBlocks.get(i).getHeight() + this.levelBlocks.get(i).getHeight()
-                        && this.ballX <= this.levelBlocks.get(i).getColumn() * this.levelBlocks.get(i).getWidth() + this.levelBlocks.get(i).getWidth()
-                        && this.ballX >= this.levelBlocks.get(i).getColumn() * this.levelBlocks.get(i).getWidth()
-                        &&(ballMovement.intersectionWith(blockLines[2]) != null || ballMovement.intersectionWith(blockLines[3]) != null)) {
-                    this.ballVelocity.setVelocity(-1*(this.ballVelocity.getDx()+1), this.ballVelocity.getDy());
-                    this.levelBlocks.get(i).setInvisible();
-                    this.score += 20;
-                    this.brokenBlocks++;
-                    if (this.brokenBlocks == 24) {
-                        youWon();
+                Line[] blockLines = levelBlocks.get(i).getLinesOfRect();
+                com.example.myapplication.Geometry.Point intersectionPoint;
+
+                for (int j = 0; j < 4; j++) {
+                    intersectionPoint = ballMovement.intersectionWith(blockLines[j]);
+                    if (intersectionPoint != null) {
+                        if (minPoint == null || intersectionPoint.distance(current) < minPoint.distance(current)) {
+                            minPoint = intersectionPoint;
+                            minBlockIndex = i;
+                            interIndex = j;
+                        }
                     }
                 }
             }
         }
+
+        if (minPoint != null && minBlockIndex != -1) {
+
+            switch (interIndex) {
+                case 0:
+                    this.ballX = (float) minPoint.getX();
+                    this.ballY = (float) minPoint.getY() - ballHeight / 2;
+                    this.ballVelocity.setVelocity(this.ballVelocity.getDx(), -1 * (this.ballVelocity.getDy() + 1));
+                    break;
+                case 1:
+                    this.ballX = (float) minPoint.getX();
+                    this.ballY = (float) minPoint.getY() + ballHeight / 2;
+                    this.ballVelocity.setVelocity(this.ballVelocity.getDx(), -1 * (this.ballVelocity.getDy() + 1));
+                    break;
+                case 2:
+                    this.ballX = (float) minPoint.getX() - ballWidth / 2;
+                    this.ballY = (float) minPoint.getY();
+                    this.ballVelocity.setVelocity(-1 * (this.ballVelocity.getDx() + 1), this.ballVelocity.getDy());
+                    break;
+                case 3:
+                    this.ballX = (float) minPoint.getX() + ballWidth / 2;
+                    this.ballY = (float) minPoint.getY();
+                    this.ballVelocity.setVelocity(-1 * (this.ballVelocity.getDx() + 1), this.ballVelocity.getDy());
+                    break;
+            }
+            this.levelBlocks.get(minBlockIndex).setInvisible();
+            this.score += 20;
+            this.brokenBlocks++;
+            if (this.brokenBlocks == 24) {
+                youWon();
+            }
+        }
+
+
+        this.ballX += this.ballVelocity.getDx();
+        this.ballY += this.ballVelocity.getDy();
+
         if (this.brokenBlocks == this.numBlocks) {
             this.gameOver = true;
         }
+
         if (!this.gameOver) {
             this.handler.postDelayed(this.runnable, 30);
         }
     }
+
+
+
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
