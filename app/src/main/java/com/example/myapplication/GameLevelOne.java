@@ -187,8 +187,27 @@ public class GameLevelOne extends View {
         }
 
 
-        this.ballX += this.ballVelocity.getDx();
-        this.ballY += this.ballVelocity.getDy();
+        minPoint = null;
+        Line ballMovement2 = new Line(this.ballX, this.ballY, this.ballX + this.ballVelocity.getDx(), this.ballY + this.ballVelocity.getDy());
+        for (int i = 0; i < this.numBlocks; i++) {
+            if (levelBlocks.get(i).getVisability()) {
+                Line[] blockLines = levelBlocks.get(i).getLinesOfRect();
+                com.example.myapplication.Geometry.Point intersectionPoint;
+
+                for (int j = 0; j < 4; j++) {
+                    intersectionPoint = ballMovement2.intersectionWith(blockLines[j]);
+                    if (intersectionPoint != null) {
+                        if (minPoint == null || intersectionPoint.distance(current) < minPoint.distance(current)) {
+                            minPoint = intersectionPoint;
+                        }
+                    }
+                }
+            }
+        }
+        if (minPoint == null) {
+            this.ballX += this.ballVelocity.getDx();
+            this.ballY += this.ballVelocity.getDy();
+        }
 
         if (this.brokenBlocks == this.numBlocks) {
             this.gameOver = true;
