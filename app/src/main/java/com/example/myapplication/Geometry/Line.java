@@ -3,11 +3,6 @@ package com.example.myapplication.Geometry;
 
 
 
-/**
- * Represents a line, defined by start and end point.
- *
- * @author Gavriel Shandalov
- */
 public class Line {
     private Point start;
     private Point end;
