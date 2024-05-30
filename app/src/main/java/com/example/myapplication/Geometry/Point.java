@@ -1,10 +1,5 @@
 package com.example.myapplication.Geometry;
-/**
- * .
- * Represents a Point, defined by x and y(double).
- *
- * @author Gavriel Shandalov
- */
+
 public class Point {
     private double x;
     private double y;
