@@ -1,4 +1,3 @@
-// 216252437 Gavriel Shandalov
 package com.example.myapplication.Geometry;
 /**
  * .
