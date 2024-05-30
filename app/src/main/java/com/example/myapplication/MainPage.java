@@ -82,7 +82,6 @@ public class MainPage extends AppCompatActivity {
                 intent.setAction("NOTIFICATION_ACTION");
                 PendingIntent pendingIntent = PendingIntent.getBroadcast(MainPage.this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
-                // Schedule the alarm to trigger in 10 seconds (for testing purposes)
                 long triggerTime = System.currentTimeMillis() + 1000; // 10 seconds
                 alarmManager.set(AlarmManager.RTC_WAKEUP, triggerTime, pendingIntent);
             }

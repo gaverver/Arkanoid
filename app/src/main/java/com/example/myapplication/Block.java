@@ -32,10 +32,10 @@ public class Block {
     }
     public Line[] getLinesOfRect() {
         Line[] lines = new Line[4];
-        lines[0] = new Line(this.column * this.width, this.row * this.height, this.column * this.width + this.height,this.row * this.height); //up
-        lines[1] = new Line(this.column * this.width, this.row * this.height + this.height, this.column * this.width + this.height,this.row * this.height + this.height); //down
-        lines[2] = new Line(this.column * this.width, this.row * this.height, this.column * this.width, this.row * this.height + this.height); //left
-        lines[3] = new Line(this.column * this.width + this.width, this.row * this.height, this.column * this.width + this.width, this.row * this.height + this.height); //right
+        lines[0] = new Line(this.column * this.width, this.row * this.height + 60, this.column * this.width + this.height,this.row * this.height + 60); //up
+        lines[1] = new Line(this.column * this.width, this.row * this.height + this.height + 60, this.column * this.width + this.height,this.row * this.height + this.height + 60); //down
+        lines[2] = new Line(this.column * this.width, this.row * this.height + 60, this.column * this.width, this.row * this.height + this.height + 60); //left
+        lines[3] = new Line(this.column * this.width + this.width, this.row * this.height + 60, this.column * this.width + this.width, this.row * this.height + this.height + 60); //right
         return lines;
     }
 }

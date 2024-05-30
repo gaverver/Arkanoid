@@ -61,7 +61,7 @@ public class GameLevelThree extends View {
         this.height = size.y;
         this.random = new Random();
         this.ballX = random.nextInt(width - 50);
-        this.ballY = (float)this.height/3;
+        this.ballY = (float)this.height/2;
         this.paddleY = (float)height * 4/5;
         this.paddleX = (float)this.width / 2 - (float)this.paddle.getWidth() / 2;
         this.ballWidth = ball.getWidth();
